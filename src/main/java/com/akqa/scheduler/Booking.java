@@ -1,5 +1,7 @@
 package com.akqa.scheduler;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -20,39 +22,40 @@ public class Booking {
 	 * @param duration	The duration of the booking.
 	 */
 	public Booking(Date start, String id, Integer duration) {
-		this.setStart(start);
+		this.start = start;
 		this.end = new Date(start.getTime() + (duration*3600000));
 		this.employee = id;
 	}
 	
 	// -- operations
-	public Boolean compareTo(Booking booking) {
+	public Boolean checkOverlap(Booking booking) {
 		Boolean result = false;
-		System.out.println(this.start + " to " + this.end);
-		System.out.println(booking.getStart() + " to " + booking.getEnd());
 		if(
-			(booking.getStart().after(this.end) || booking.getStart().before(this.start)) &&
-			(booking.getEnd().before(this.start) || booking.getEnd().after(this.end))
+			((this.start.compareTo(booking.getStart()) < 0) &&
+			 (this.end.compareTo(booking.getStart()) > 0)) ||
+			((this.start.compareTo(booking.getStart()) == 0) &&
+			 (this.end.compareTo(booking.getEnd()) == 0))
 		)
 		{
 			result = true;
 		}
 		return result;
 	}
+	
+	public String getBookingInfo() {
+		DateFormat translator = new SimpleDateFormat("HH:mm");
+		return String.format("%s %s %s", translator.format(start), translator.format(end), this.employee);
+	}
 
 	public Date getStart() {
 		return start;
 	}
 
-	public void setStart(Date start) {
-		this.start = start;
-	}
-
 	public Date getEnd() {
 		return end;
 	}
-
-	public void setEnd(Date end) {
-		this.end = end;
+	
+	public String toString() {
+		return String.format("%s %s %s", start, end, this.employee);
 	}
 }

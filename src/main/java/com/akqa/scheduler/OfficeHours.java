@@ -23,7 +23,7 @@ public class OfficeHours {
 	 * @throws ParseException 
 	 */
 	public OfficeHours(String start, String end) throws ParseException {
-		DateFormat format = new SimpleDateFormat( "HH:mm" );
+		DateFormat format = new SimpleDateFormat( "HHmm" );
 		this.start = new Date(format.parse(start).getTime());
 		this.end = new Date(format.parse(end).getTime());
 	}

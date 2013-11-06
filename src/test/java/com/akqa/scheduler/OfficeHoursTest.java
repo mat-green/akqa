@@ -42,7 +42,7 @@ public class OfficeHoursTest {
 	@Test
 	public final void testCheckHours() throws ParseException {
 		// Test set up
-		OfficeHours component = new OfficeHours("09:00", "17:30");
+		OfficeHours component = new OfficeHours("0900", "1730");
 		DateFormat format = new SimpleDateFormat( "hh:mm" );
 		Date startOk = new Date(format.parse("09:00").getTime());
 		Date startBad = new Date(format.parse("16:00").getTime());

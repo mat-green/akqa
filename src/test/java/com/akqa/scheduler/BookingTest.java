@@ -3,8 +3,7 @@
  */
 package com.akqa.scheduler;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -35,22 +34,36 @@ public class BookingTest {
 	}
 
 	/**
-	 * Test method for {@link com.akqa.scheduler.Booking#compareTo(com.akqa.scheduler.Booking)}.
+	 * Test method for {@link com.akqa.scheduler.Booking#checkOverlap(com.akqa.scheduler.Booking)}.
 	 * @throws ParseException 
 	 */
 	@Test
-	public final void testCompareTo() throws ParseException {
+	public final void testCheckOverlap() throws ParseException {
 		// test set up
 		DateFormat format = new SimpleDateFormat( "yyyy-MM-DD HH:mm" );
 		Booking component = new Booking(format.parse("2011-03-21 09:00"), "EMP001", 2);
 		Booking good = new Booking(format.parse("2011-03-21 12:00"), "EMP002", 1);
 		Booking bad = new Booking(format.parse("2011-03-21 10:00"), "EMP003", 1);
 		// test execution
-		Boolean success = component.compareTo(good);
-		Boolean failure = component.compareTo(bad);
+		Boolean success = component.checkOverlap(good);
+		Boolean failure = component.checkOverlap(bad);
 		// test verification
-		assertTrue(success.booleanValue());
-		assertFalse(failure.booleanValue());
+		assertFalse(success.booleanValue());
+		assertTrue(failure.booleanValue());
 	}
 
+	/**
+	 * Test method for {@link com.akqa.scheduler.Booking#getBookingInfo()}.
+	 * @throws ParseException From date format translation.
+	 */
+	@Test
+	public final void testGetBookingInfo() throws ParseException {
+		// test set up
+		DateFormat translater = new SimpleDateFormat( "yyyy-MM-DD HH:mm" );
+		Booking component = new Booking(translater.parse("2011-03-21 09:00"), "EMP001", 2);
+		// test execution
+		String result = component.getBookingInfo();
+		// test verification
+		assertEquals("09:00 11:00 EMP001", result);
+	}
 }

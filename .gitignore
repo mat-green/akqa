@@ -4,3 +4,5 @@
 .settings
 # Maven build folder
 target
+# other files
+*.docx

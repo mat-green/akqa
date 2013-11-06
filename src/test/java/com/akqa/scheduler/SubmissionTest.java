@@ -21,9 +21,9 @@ public class SubmissionTest {
 	}
 
 	@Test
-	public final void testCheckBooking() throws ParseException {
+	public final void testCheckBookingWithinHours() throws ParseException {
 		// Test set up
-		OfficeHours hours = new OfficeHours("09:00", "17:30");
+		OfficeHours hours = new OfficeHours("0900", "1730");
 		Submission okaySubmission = new Submission("2011-03-17 10:17:06", "EMP001", "2011-03-21 09:00", 2, hours);
 		Submission badSubmission = new Submission("2011-03-15 17:29:12", "EMP005", "2011-03-21 16:00", 3, hours);
 		List<Booking> current = new ArrayList<Booking>();
@@ -35,4 +35,19 @@ public class SubmissionTest {
 		assertFalse(bad.booleanValue());
 	}
 
+	@Test
+	public final void testCheckBookingOverLapping() throws ParseException {
+		// Test set up
+		OfficeHours hours = new OfficeHours("0900", "1730");
+		Submission okaySubmission = new Submission("2011-03-16 12:34:56", "EMP002", "2011-03-21 09:00", 2, hours);
+		Submission badSubmission = new Submission("2011-03-17 10:17:06", "EMP001", "2011-03-21 19:00", 2, hours);
+		List<Booking> current = new ArrayList<Booking>();
+		// Test execution
+		Boolean okay = okaySubmission.checkBooking(current);
+		current.add(okaySubmission.createBooking());
+		Boolean bad = badSubmission.checkBooking(current);
+		// Test verification
+		assertTrue(okay.booleanValue());
+		assertFalse(bad.booleanValue());
+	}
 }
